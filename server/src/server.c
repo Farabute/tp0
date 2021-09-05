@@ -7,6 +7,16 @@ int main(void) {
 	log_info(logger, "Servidor listo para recibir al cliente");
 	int cliente_fd = esperar_cliente(server_fd);
 
+	uint32_t handshake;
+	uint32_t resultOk = 0;
+	uint32_t resultError = -1;
+
+	recv(cliente_fd, &handshake, sizeof(uint32_t), MSG_WAITALL);
+	if(handshake == 1)
+	   send(cliente_fd, &resultOk, sizeof(uint32_t), NULL);
+	else
+	   send(cliente_fd, &resultError, sizeof(uint32_t), NULL);
+
 	t_list* lista;
 	while (1) {
 		int cod_op = recibir_operacion(cliente_fd);
@@ -16,8 +26,8 @@ int main(void) {
 			break;
 		case PAQUETE:
 			lista = recibir_paquete(cliente_fd);
-			log_info(logger, "Me llegaron los siguientes valores:\n");
-			list_iterate(lista, (void*) iterator);
+			log_info(logger, "Me llegaron los siguientes valores:");
+			list_iterate(lista, (void*)iterator);
 			break;
 		case -1:
 			log_error(logger, "el cliente se desconecto. Terminando servidor");
@@ -31,6 +41,7 @@ int main(void) {
 	return EXIT_SUCCESS;
 }
 
-void iterator(t_log* logger, char* value) {
-	log_info(logger,"%s\n", value);
+void iterator(char* value) {
+	log_info(logger,"%s", value);
 }
+
