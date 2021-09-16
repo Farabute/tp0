@@ -40,6 +40,19 @@ int esperar_cliente(int socket_servidor)
 	return socket_cliente;
 }
 
+void handshake(int socket_cliente){
+	uint32_t handshake;
+	uint32_t resultOk = 0;
+	uint32_t resultError = -1;
+
+	recv(socket_cliente, &handshake, sizeof(uint32_t), MSG_WAITALL);
+	if(handshake == 1)
+	   send(socket_cliente, &resultOk, sizeof(uint32_t), NULL);
+	else
+	   send(socket_cliente, &resultError, sizeof(uint32_t), NULL);
+}
+
+
 int recibir_operacion(int socket_cliente)
 {
 	int cod_op;
