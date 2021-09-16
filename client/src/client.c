@@ -46,14 +46,13 @@ int main(void)
 	enviar_mensaje(valor, conexion);
 
 	paquete = crear_paquete();
+	//paquete = crear_super_paquete();
 
 	leer_consola(logger, paquete);
 
 	enviar_paquete(paquete, conexion);
 
 	eliminar_paquete(paquete);
-
-	//paquete(conexion);
 
 	terminar_programa(conexion, logger, config);
 

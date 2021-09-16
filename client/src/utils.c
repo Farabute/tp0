@@ -39,12 +39,12 @@ int crear_conexion(char *ip, char* puerto)
 	return socket_cliente;
 }
 
-void handshake(int conexion){
+void handshake(int socket_cliente){
 	uint32_t handshake = 1;
 	uint32_t result;
 
-	send(conexion, &handshake, sizeof(uint32_t), NULL);
-	recv(conexion, &result, sizeof(uint32_t), MSG_WAITALL);
+	send(socket_cliente, &handshake, sizeof(uint32_t), NULL);
+	recv(socket_cliente, &result, sizeof(uint32_t), MSG_WAITALL);
 }
 
 void enviar_mensaje(char* mensaje, int socket_cliente)
